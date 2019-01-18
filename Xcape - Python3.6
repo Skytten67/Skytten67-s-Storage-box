@@ -1,0 +1,127 @@
+import pygame
+import time
+
+pygame.init()
+
+display_width = 1200
+display_height = 700
+
+black = (0, 0, 0)
+white = (255, 255, 255)
+red   = (255, 0, 0)
+purple = (255, 0, 255)
+green = (0, 255, 0)
+blue = (0, 0, 255)
+yellow = (255, 255, 0)
+ 
+Johnny = pygame.image.load('Character.png')
+Johnny = pygame.transform.scale(mario, (48, 64))
+
+game_display = pygame.display.set_mode((display_width,display_height))
+
+pygame.display.set_caption('Xcape')
+
+clock = pygame.time.Clock()
+
+game_display.fill(white)
+
+pygame.display.update()
+
+large_font = pygame.font.Font('freesansbold.ttf', 100)
+normal_font = pygame.font.Font('freesansbold.ttf', 16)
+
+menu_text1 = ['Xcape']
+
+for sentence in menu_text1:
+
+    game_display.fill(black)
+    
+
+    text_surf = large_font.render(sentence, True, white)
+
+    text_rect = text_surf.get_rect()
+
+    text_rect.center = ((display_width // 2), (display_height // 4))
+
+    game_display.blit(text_surf, text_rect)
+
+    pygame.display.update()
+
+    time.sleep(4)
+
+intro_text = ['Hello there.',
+              'You are about to embark on a treacherous journey.',
+              'In this world you will assume the role of a detective from a big city.',
+              'You have heard rumours that an abandoned factory fairly far away from the closest settlement has illegally been opened again.',
+              'This factory had previously been closed due to numerous suspicions that it was experimenting on innocent humans.',
+              'However, no one could provide any solid evidence that this was the case.',
+              'Whatever the truth may reveal, you will secretly go to this factory to investigate it.',
+              'As soon as you get there, the factory seems to be fairly empty.',
+              'You take a chance by going inside the factory, through what appears to be an open door.',
+              'Suddenly, the door closes behind you. You are now trapped inside the factory.']
+
+for sentence in intro_text:
+    game_display.fill(black)
+
+    text_surf = normal_font.render(sentence, True, white)
+    text_rect = text_surf.get_rect()
+
+    text_rect.center = ((display_width // 2), (display_height // 2))
+
+    game_display.blit(text_surf, text_rect)
+
+    pygame.display.update()
+
+    time.sleep(3.5)
+
+intro_text2 = ['Good Luck']
+
+for sentence in intro_text2:
+
+    game_display.fill(black)
+
+    text_surf = large_font.render(sentence, True, red)
+
+    text_rect = text_surf.get_rect()
+
+    text_rect.center = ((display_width // 2), (display_height // 2))
+
+    game_display.blit(text_surf, text_rect)
+
+    pygame.display.update()
+    
+    time.sleep(3)
+
+done = False
+
+while not done:
+    for event in pygame.event.get():
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_ESCAPE:
+                done = True
+
+            if event.key == pygame.K_a:
+                x -= 48
+            if event.key == pygame.K_d:
+                x += 48
+            if event.key == pygame.K_w:
+                y -= 48
+            if event.key == pygame.K_s:
+                y += 48
+            if event.key == pygame.K_LEFT:
+                x -= 48
+            if event.key == pygame.K_RIGHT:
+                x += 48
+            if event.key == pygame.K_UP:
+                y -= 48
+            if event.key == pygame.K_DOWN:
+                y += 48
+    
+    game_display.fill(white)
+    game_display.blit(Johnny, (x, y))
+
+    pygame.display.update()
+
+    clock.tick(30)
+
+pygame.quit()
