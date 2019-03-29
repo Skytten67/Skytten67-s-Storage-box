@@ -1,11 +1,14 @@
 import pygame
 import time
 
+# start opp pygame
 pygame.init()
 
+# definer bredden og høyden på spillvinduet som variabler
 display_width = 1200
 display_height = 700
 
+# lag forkortede navn på de forskjellige fargene som skal brukes
 black = (0, 0, 0)
 white = (255, 255, 255)
 red   = (255, 0, 0)
@@ -13,26 +16,40 @@ purple = (255, 0, 255)
 green = (0, 255, 0)
 blue = (0, 0, 255)
 yellow = (255, 255, 0)
- 
-johnny = pygame.image.load('Character.png'))
+
+distance = 30
+
+# last inn spriten til spilleren 
+johnny = pygame.image.load('Character.png')
+# endre størrelsen (hvis det trengs)
 johnny = pygame.transform.scale(johnny, (96, 112))
 
 background_image = pygame.image.load('Background.png')
+note_image = pygame.image.load('Note.png')
 background_position = [0, 0]
+#FEIL:background = pygame.transform.scale(background, (1200, 700))
 
+# game_display representerer en såkalt "surface", denne definerer hva som skal vises som innhold i spillvinduet 
 game_display = pygame.display.set_mode((display_width,display_height))
 
+# her addresserer vi selve vinduet og setter tittelen
 pygame.display.set_caption('Xcape')
 
+# clock brukes for å styre frameraten på spillet, bedre enn sleep, fordi det tar høyde for at spillet kan bruke litt tid på å tegne ting
 clock = pygame.time.Clock()
 
+#farg bakgrunnen hvit-
 game_display.fill(white)
 
+# update er det som faktisk tegner alt du har beskrevet siden siste update
 pygame.display.update()
 
+# font-objektene definerer hvordan tekst skal vises på skjermen
+# her har jeg laget to stykk, slik at man kan tegne både tittel og annen tekst
 large_font = pygame.font.Font('freesansbold.ttf', 115)
 normal_font = pygame.font.Font('freesansbold.ttf', 16)
 
+# her har jeg lagret all dialogen i introen i en liste med tekst, dette er litt mer fleksibelt, siden hvis man legger til eller fjerner noe så funker det fortsatt
 intro_text = ['Hello there.',
               'You are about to embark on a treacherous journey.',
               'In this world you will assume the role of a detective from a big city.',
@@ -44,71 +61,134 @@ intro_text = ['Hello there.',
               'You take a chance by going inside the factory, through what appears to be an open door.',
               'Suddenly, the door closes behind you. You are now trapped inside the factory.']
 
-for sentence in intro_text:
-    game_display.fill(black)
-   
-    text_surf = normal_font.render(sentence, True, white)
+# her går vi gjennom hver tekst og viser den på skjermen, før selve spillet starter
+#for sentence in intro_text:
+    # bakgrunnen må fortsatt farges, siden alt resettes mellom hver update
+    #game_display.fill(black)
 
-    text_rect = text_surf.get_rect()
+    # render brukes for å finne ut hvordan teksten ser ut som piksler hvis den tegnes
+    #text_surf = normal_font.render(sentence, True, white)
+    # text_rect definerer hvor på skjermen teksten vil havne
+    #text_rect = text_surf.get_rect()
 
-    text_rect.center = ((display_width // 2), (display_height // 2))
+    # her flytter vi teksten til midten av skjermen
+    #text_rect.center = ((display_width // 2), (display_height // 2))
 
-    game_display.blit(text_surf, text_rect)
+    # fortell vinduet hvordan teksten ser ut, og hvor den skal være
+    #game_display.blit(text_surf, text_rect)
 
-    pygame.display.update()
+    #pygame.display.update()
 
-    time.sleep(1)
+    #time.sleep(1)
 
 intro_text2 = ['Good Luck']
 
-for sentence in intro_text2:
+#for sentence in intro_text2:
 
-    game_display.fill(black)
+    #game_display.fill(black)
 
-    text_surf = large_font.render(sentence, True, red)
+    #text_surf = large_font.render(sentence, True, red)
 
-    text_rect = text_surf.get_rect()
+    #text_rect = text_surf.get_rect()
 
-    text_rect.center = ((display_width // 2), (display_height // 2))
+    #text_rect.center = ((display_width // 2), (display_height // 2))
 
-    game_display.blit(text_surf, text_rect)
+    #game_display.blit(text_surf, text_rect)
 
-    pygame.display.update()
+    # vi må oppdatere, hvis ikke kommer det aldri på skjermen
+    #pygame.display.update()
     
-    time.sleep(3)
+    # her kan vi bruke time sleep, fordi å tegne teksten tar tilnærmet 0 sekunder
+    #time.sleep(3)
 
+# done representerer om spillet er ferdig/avbrutt
 done = False
-x, y = (display_width // 2), (display_height // 2)
+see_Note = False
+left = False
+right = False
+up = False
+down = False
 
+# x og y representerer posisjonen til spilleren på skjermen
+x, y = (display_width // 2) - 550, (display_height // 2) - 50
+# her er eksempel på hvordan man kan holde styr på et annet objekt enn spilleren
+#background_x, background_y = (display_width // 2) - 600, (display_height // 2) - 350            
+    
+# igjen må vi fylle bakgrunnen
+# game_display.fill(black)
+# tegn noe mer 
+game_display.blit(background_image, background_position)
+
+
+# her er det som kalles "game loop", som kjører om og om igjen til spillet er slutt
 while not done:
+    if left == True:
+        x -= distance
+    if right == True:
+        x += distance
+    if up == True:
+        y -= distance
+    if down == True:
+        y += distance
+    # event representerer det som pygame fanger opp av tastetrykk og liknende
     for event in pygame.event.get():
+        # hvis det er en tast som trykkes ned
         if event.type == pygame.KEYDOWN:
+            # hvis den tasten som tryktes ned er escape
             if event.key == pygame.K_ESCAPE:
                 done = True
 
+            # hvis det er en av piltastene, endre spillerens posisjon
             if event.key == pygame.K_a:
-                x -= 48
+                left = True
             if event.key == pygame.K_d:
-                x += 48
+                right = True
             if event.key == pygame.K_w:
-                y -= 48
+                up = True
             if event.key == pygame.K_s:
-                y += 48
+                down = True
             if event.key == pygame.K_LEFT:
-                x -= 48
+                left = True
             if event.key == pygame.K_RIGHT:
-                x += 48
+                right = True
             if event.key == pygame.K_UP:
-                y -= 48
+                up = True
             if event.key == pygame.K_DOWN:
-                y += 48
-    
-    game_display.fill(black) 
-    game_display.blit(background_image, background_position)
+                down = True
+
+            #Hva som skjer når spilleren står på (x) og (y)
+            #Note vil ikke gå bort!!!
+            if event.key == pygame.K_e:
+                if x == 1075 and y == 575:
+                    if not see_Note:
+                        game_display.blit(note_image, background_position)
+            if event.key == pygame.K_r:
+                see_Note = False
+                game_display.blit(background_image, background_position)
+                        
+                        
+
+                             
+    # tegn johnny
     game_display.blit(johnny, (x, y))
-    
+
+
+    if x > display_width - 125:
+        x = 1075
+    if x < 10:
+        x = 10
+    if y > display_height - 125:
+        y = 575
+    if y < 30:
+        y = 30
+                    
+    # update, så det vises på skjermen
     pygame.display.update()
 
-    clock.tick(30)
+        
+        
+    # likner på sleep, men her forteller vi bare at clock skal opprettholde en framerate på antall frames per sekund
+    # clock.tick(30)
 
+# sørg for at pygame lukker seg riktig
 pygame.quit()
