@@ -156,8 +156,26 @@ while not done:
             if event.key == pygame.K_DOWN:
                 down = True
 
+        if event.type == pygame.KEYUP:
+
+            if event.key == pygame.K_a:
+                left = False
+            if event.key == pygame.K_d:
+                right = False
+            if event.key == pygame.K_w:
+                up = False
+            if event.key == pygame.K_s:
+                down = False
+            if event.key == pygame.K_LEFT:
+                left = False
+            if event.key == pygame.K_RIGHT:
+                right = False
+            if event.key == pygame.K_UP:
+                up = False
+            if event.key == pygame.K_DOWN:
+                down = False
+
             #Hva som skjer når spilleren står på (x) og (y)
-            #Note vil ikke gå bort!!!
             if event.key == pygame.K_e:
                 if x == 1075 and y == 575:
                     if not see_Note:
